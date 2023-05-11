@@ -1,0 +1,265 @@
+<%- include("../layouts/userheader.ejs") %>
+    
+     <!-- Breadcrumb Begin -->
+     <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="/"><i class="fa fa-home"></i> Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12" style="margin-top: 1rem;">
+      <form method="GET" action="/productload" style="margin-left: 11rem;">
+          <input type="text" name="query" placeholder="Search products...">
+
+          <input type="hidden" name="priceMin" value="<%= pricemin %>">
+          <input type="hidden" name="priceMax" value="<%= pricemax %>">
+    
+            <input type="hidden" name="subcategoryid" value="<%= subcategorize %>">
+            
+          <button class="btn" style="background-color: #f49191;" type="submit">Search</button>
+        </form>
+        
+  </div>
+    <!-- Breadcrumb End -->
+
+   
+   
+    
+  
+   
+    <!-- Shop Section Begin -->
+ <section class="shop spad">
+  <div class="container">
+    <div class="row">
+   <div class="col-lg-3 col-md-3">
+        <div class="shop__sidebar">
+            <div class="sidebar__categories">
+                <div class="section-title">
+                    <h4>Categories</h4>
+                </div>
+                <div class="categories__accordion">
+                    <div class="accordion" id="accordionExample">
+                        <% for (var i = 0; i<categories.length; i++) { %>
+                        <div class="card">
+                            <div class="card-heading active">
+                               
+                                <a href="/productload?categoryid=<%= categories[i]._id %>" data-toggle="collapse" data-target="#collapse<%= i %>">
+                                    <%= categories[i].name %>
+
+                                </a>
+                            </div>
+                            <% const categorySubcategories = subcategories.filter(subcategory => subcategory.category.toString() === categories[i]._id.toString()) %>
+                            <% if (categorySubcategories.length > 0) { %>
+                            <div id="collapse<%= i %>" class="collapse" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <ul>
+                                        <% for (var j = 0; j < categorySubcategories.length; j++) { %>
+                                      
+                                            <li><a href="/productload?subcategoryid=<%=categorySubcategories[j]._id %>&priceMin=<%= pricemin %>&priceMax=<%= pricemax %>&sortorder=<%= req.query.sortorder %>"><%= categorySubcategories[j].name %></a></li>
+                                            <% } %>
+                                    </ul>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="shop__sidebar">
+                <div class="sidebar__price">
+                  <div class="section-title">
+                    <h4>Shop by price</h4>
+                  </div>
+                  <form action="/productload" method="GET">
+                    <input type="hidden" name="categoryid" value="<%= categorize %>">
+                    <input type="hidden" name="subcategoryid" value="<%=subcategorize%>">
+                    <input type="hidden" name="query" value="<%= locals.req.query.query %>">
+                  
+                    <div class="form-group">
+                      <label for="price-min">Min Price:</label>
+                      <input type="number" id="price-min" name="priceMin" value="<%= pricemin %>" min="0">
+                    </div>
+                    <div class="form-group">
+                      <label for="price-max">Max Price:</label>
+                      <input type="number" id="price-max" name="priceMax" value="<%= pricemax %>" min="0">
+                    </div>
+                    <select name="sortorder">
+                      <option value="asc" <% if (locals.req.query.sortorder === 'asc') { %>selected<% } %>>Price: Low to High</option>
+                      <option value="desc" <% if (locals.req.query.sortorder === 'desc') { %>selected<% } %>>Price: High to Low</option>
+                    </select>
+
+                    
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    
+                  </form>
+                  <div>Filtered Price: <%= pricemin %> - <%= pricemax %></div>
+
+                </div>
+
+
+              </div>
+              
+              
+            
+        </div>
+    </div>
+  
+    
+    
+    <div class="col-lg-9 col-md-9">
+     
+       
+        <div class="row">
+          <%if (products.length === 0){ %>
+            <h4 style="margin-left: 20%;">No products found </h4>
+            <%}else{%>
+            <% products.forEach(function(products){ %>
+            <div class="col-lg-4 col-md-6">
+                <div class="product__item">
+                    <% if(products.images.length > 0){ %>
+                        <div class="product__item__pic set-bg" >
+                          <span><img src="/admin/product/<%= products.images[0] %>" alt=""></span>
+                        <div class="label new">New</div>
+                        <ul class="product__hover">
+                            <li><a href="/admin/product/<%= products.images %>" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            <li>
+                              <form class="wishlist-form">
+                                <input type="hidden" name="categoryid" value="<%= products.category %>">
+                                <input type="hidden" name="subcategoryid" value="<%= products.subcategory %>">
+                                <input type="hidden" name="productid" value="<%= products._id %>">
+                                <button type="submit" style="border:none; background:none">
+                                 <a><span class="icon_heart_alt"></span></a>
+                                </button>
+                              </form>
+                              
+                            </li>
+
+                            <li><form class="addtocart-form">
+                              <input type="hidden" name="categoryid" value="<%= products.category %>">
+                              <input type="hidden" name="subcategoryid" value="<%= products.subcategory %>">
+                              <input type="hidden" name="productid" value="<%= products._id %>">
+                              <button type="submit" style="border:none;  background:none">
+                                <a><span class="icon_bag_alt"></span></a>
+                              </button>
+                            </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <% } %>
+                    <div class="product__item__text">
+                        <h6><a href="/product-details?productid=<%=products._id%>"><%= products.name %></a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price"><%= products.price %></div>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+            <% } %>
+
+        </div>
+        <div class="col-lg-12 text-center">
+            <div class="pagination__option">
+                <% if (totalPages > 1) { %>
+                    <div>
+                      <% for (let i = 1; i <= totalPages; i++) { %>
+                        <% if (i === page) { %>
+                          <span><%= i %></span>
+                        <% } else { %>
+                          <a href="/productload?page=<%= i %>&categoryid=<%= categorize %>&subcategoryid=<%= subcategorize %>&priceMin=<%= pricemin %>&priceMax=<%= pricemin %>"><%= i %></a>
+                        <% } %>
+                      <% } %>
+                    </div>
+                  <% } %>
+            </div>
+         </div>
+       
+    </div>
+    </div>
+  </div>
+ </section>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+    $('.wishlist-form').on('submit', function(event) {
+      event.preventDefault(); // prevent the form from submitting normally
+      $.ajax({
+        type: 'GET',
+        url: '/addwishlist',
+        data: $(this).serialize(), // serialize the form data
+        success: function(data) {
+          if (data.success) {
+            swal({
+            title: "Success!",
+            text: data.message,
+            icon: "success",
+            button: "OK",
+          });
+          } else {
+            swal({
+            title: "Error!",
+            text: data.message,
+            icon: "error",
+            button: "OK",
+          });
+            
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log('Error:', errorThrown);
+        }
+      });
+    });
+
+
+    $('.addtocart-form').on('submit', function(event) {
+    event.preventDefault(); // prevent the form from submitting normally
+    $.ajax({
+      type: 'GET',
+      url: '/addcart',
+      data: $(this).serialize(), // serialize the form data
+      success: function(data) {
+        console.log(data)
+        if (data.success) {
+          swal({
+            title: "Success!",
+            text: data.message,
+            icon: "success",
+            button: "OK",
+          });
+        } else {
+          swal({
+            title: "Error!",
+            text: data.message,
+            icon: "error",
+            button: "OK",
+          });
+          
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('Error:', errorThrown);
+      }
+    });
+  });
+
+
+
+  </script>
+
+<!-- Product Section End -->
+<%- include("../layouts/userfooter.ejs") %>

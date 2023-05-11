@@ -1,0 +1,166 @@
+<%- include("../layouts/userheader.ejs") %>
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links" style="height:0rem">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="#">Product </a>
+                        <span>Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Product Details Section Begin -->
+    <section class="product-details spad">
+      
+        <div class="container">
+            <div class="row">
+                
+               
+                <div class="col-lg-6">
+                    <% if(products.images.length > 0){ %>
+                        <div class="product__details__pic">
+                            <div class="product__details__slider__content">
+                                <div class="product__details__pic__slider owl-carousel">
+                                    <% for(var i=0; i<products.images.length; i++) { %>
+                                        <a style="width:100%" id="image_prev2" href="/admin/product/<%= products.images[i] %>" alt="IMG-PRODUCT" class="MagicZoom">
+                                        <img data-hash="product-<%= i+1 %>" class="product__big__img"   src="/admin/product/<%= products.images[i] %>" alt="IMG-PRODUCT" id="image_prev">
+                                    
+                                        </a>
+                                        
+                                    <% } %>
+                                </div> 
+                            </div>
+                        </div>
+                    <% } %>
+                    
+                </div>
+                <div class="col-lg-6">
+                    <div class="product__details__text">
+                        <h3><%= products.name%> <span></span></h3>
+                        <!-- <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <span>( 138 reviews )</span>
+                        </div> -->
+                        <div class="product__details__price">INR <%= products.price%>.00</div>
+                        
+                        <p><%= products.description%></p>
+                        <div class="product__details__button">
+                            <!-- <div class="quantity">
+                                <span>Quantity:</span>
+                                <div class="pro-qty">
+                                    <input type="text" value="1">
+                                </div>
+                            </div> -->
+                            <form class="addtocart-form">
+                                <input type="hidden" name="categoryid" value="<%=products.category%>">
+                                <input type="hidden" name="subcategoryid" value="<%=products.subcategory%>">
+                                <input type="hidden" name="productid" value="<%=products._id%>">
+                                <input type="hidden" name="productdetails" value="true">
+                                <button style="border:none" type="submit" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</button>
+                              </form>
+                           
+                        </div>
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js"></script>
+                        
+                       
+
+                            <script>
+                            $('.addtocart-form').on('submit', function(event) {
+                             event.preventDefault(); // prevent the form from submitting normally
+                              $.ajax({
+                                type: 'GET',
+                                url: '/addcart',
+                                data: $(this).serialize(), // serialize the form data
+                                success: function(data) {
+                                if (data.success) {
+                                    swal({
+                                    title: "Success!",
+                                    text: data.message,
+                                    icon: "success",
+                                    button: "OK",
+                                });
+                                } else {
+                                    swal({
+                                    title: "Please Login To Continue",
+                                    text: data.message,
+                                    icon: "error",
+                                    button: "OK",
+                                });
+                                    
+                                }
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                console.log('Error:', errorThrown);
+                                }
+                            });
+                            });
+                                
+                          </script>
+                        <div class="product__details__widget">
+                            <ul>
+                                <li>
+                                    <span>Availability:</span>
+                                    <% if(products.stock<=5){%>
+                                        <% if(products.stock<1){%>
+                                            <h6 style="color: red;">Stock Out!!</h6>
+                                           
+                                            <%}else{%>
+                                                <h6 style="color: red;">Only <%=products.stock%> left</h6>
+                                               
+                                                <%}}else{%>
+                                                    <h6 style="color:green"><%=products.stock%> pieces</h6>
+                                                   
+                                                    <%}%>
+                                   
+                                </li>
+                               
+                              
+                            
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="product__details__tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
+                            </li> -->
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                <h6>Description</h6>
+                                <p><%= products.description%></p>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </section>
+    <!-- Product Details Section End -->
+
+
+
+<%- include("../layouts/userfooter.ejs") %>

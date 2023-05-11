@@ -1,0 +1,175 @@
+<%- include("../layouts/userheader.ejs") %>
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="#">profile </a>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+    <div class="container">
+        <div class="row">
+         <!-- <div class="col-sm-3 align-items-stretch">
+            <div class="card cart-detail"> -->
+           <!-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> -->
+             <!-- <button class="nav-link active" id="v-pills-home-tab" data-toggle="pill" data-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Profile</button>
+             <button class="nav-link" id="v-pills-profile-tab" data-toggle="pill" data-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">My Orders</button>
+             <button class="nav-link" id="v-pills-messages-tab" data-toggle="pill" data-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Addresses</button> -->
+             <!-- <button class="nav-link" id="v-pills-settings-tab" data-toggle="pill" data-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"></button> -->
+           <!-- </div> 
+         </div>
+         </div> -->
+       
+         <div class="col-sm-9 ">
+           <div class="tab-content align-items-stretch" id="v-pills-tabContent">
+             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+               <div class="card cart-detail mb-5">
+                 <form action="" style="margin-left: 60px";  method="" id="form" onsubmit="return onSubmitFunction()">
+                   <div class="mb-2 row mt-2 pt-5" >
+                     <input type="hidden" name="id" value="">
+                       <label for="staticEmail" class="col-sm-3 col-form-label">Name:</label>
+                       <div class="col-sm-6">
+                        <%=userData.name %>
+                       </div>
+                     </div>
+                     
+                     <div class="mb-3 row ">
+                       <label for="inputPassword" class="col-sm-3 col-form-label">Email:</label>
+                       <div class="col-sm-6">
+                        <%=userData.email%>
+                       </div>
+                     </div> 
+       
+                     <div class="mb-3 row">
+                       <label for="inputPassword" class="col-sm-3 col-form-label">Mobile:</label>
+                       <div class="col-sm-6">
+                         <div class="input-group mb-3">
+                          <%=userData.phone%>
+                         </div>
+                       </div>
+                     </div>
+
+                     
+                     <div class="mb-3 row">
+                      <label for="inputPassword" class="col-sm-3 col-form-label">Wallet Balance :</label>
+                      <div class="col-sm-6">
+                        <div class="input-group mb-3">
+                         INR <%=userData.wallet%>.00
+                        </div>
+                      </div>
+                    </div>
+                     <p class="text-danger"></p>
+                   <div style="display: flex;justify-content: center;margin-bottom: 2%;">
+                   
+                     
+                   </div>
+             </form>
+             </div>
+             </div>
+            
+      
+           </div>
+         </div>
+        </div>
+    </div>
+    <section class="checkout spad">
+        <div class="container">
+            <form action="/addaddress" method="post" class="checkout__form">
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h5>ADD ADDRESS</h5>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>First Name <span>*</span></p>
+
+                                    <input type="text" placeholder="firstname" name="firstname"required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Last Name <span>*</span></p>
+                                    <input type="text" placeholder="lastname"  name="lastname" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="checkout__form__input">
+                                    <p>Country <span>*</span></p>
+                                    <input type="text" placeholder="country"  name="country" required>
+                                </div>
+                                <div class="checkout__form__input">
+                                    <p>Address <span>*</span></p>
+                                    <input type="text" placeholder="address" name="address" required>
+                                
+                                </div>
+                                <div class="checkout__form__input">
+                                    <p>Town/City <span>*</span></p>
+                                    <input type="text" placeholder="town/city"  name="city" required>
+                                </div>
+                                <div class="checkout__form__input">
+                                    <p>Country/State <span>*</span></p>
+                                    <input type="text" placeholder="state"  name="state" required>
+                                </div>
+                                <div class="checkout__form__input">
+                                    <p>Postcode/Zip <span>*</span></p>
+                                    <input type="text" placeholder="zip"  name="zip" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Phone <span>*</span></p>
+                                    <input type="text" placeholder="phone"  name="phone" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Email <span>*</span></p>
+                                    <input type="text" placeholder="email"  name="email" required>
+                                </div>
+                            </div>
+                            <div >
+                                <input type="hidden" name="hidden" value="<%=userData.name%>">
+                                <button type="submit" style="margin-left: 44rem;" class="btn btn-primary">Save</button>
+                             </div>
+                            </form>
+                             <div class="row" style="margin-top: 3rem; margin-left: 0.5rem;">
+                                <%if(useraddress.length>0){
+                                    for(let key of useraddress){%>
+                                  <div class="col-md-12">
+                                                <div class="card cart-detail border-gray  mt-2 mb-3" style="padding: 30px;">
+                                                   <span class="h5"><%=key.firstname%>  <%=key.lastname%></span>
+                                                    <div class="pr-2"><%=key.address%>,<br><%=key.city%>,<br><%=key.state%><br><%=key.country%>
+                                                     <br> Pin:<%=key.zip%>,<br> Phone:<%=key.phone%>
+                                                     <br><br>
+                                                     <a href="/editaddress?id=<%=key._id%>" ><input type="button" value="Edit" class="btn btn-light btn-sm "></a>
+                                                     <a href="/deleteaddress?id=<%=key._id%>"><input type="button" value="Delete" class="btn btn-dark btn-sm "></a>
+                                                   </div>
+                                                  </div>
+                                                
+                                                  
+                                                </div>
+                                                <%}%>
+                                         <%}%>
+                                           
+                                        </div>
+                        </div>
+                       
+                    </div>
+                
+            </div>
+        </section>
+  
+
+
+
+    
+<%- include("../layouts/userfooter.ejs") %>
+

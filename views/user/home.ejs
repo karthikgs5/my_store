@@ -1,0 +1,106 @@
+<%- include("../layouts/userheader.ejs") %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<style>
+    .categories {
+        margin-top: 2rem; /* Change this value to adjust the gap */
+    }
+
+    .new {
+  display: flex;
+}
+
+.mine {
+  flex: 1;
+}
+h4 {
+    color: #b0c226;
+    -webkit-text-stroke: 1px #fcf6f6; /* For Chrome, Safari, and Opera */
+    /* text-stroke: 1px #ff0000; /* For other browsers */
+  } */
+
+
+
+</style>
+
+
+
+
+
+
+
+
+
+<% if (categories && categories.length > 0) { %>
+    <% for (let j = 0; j < categories.length; j++) { %>
+      <div class="p-b-10 ml-5">
+        <h3 class="ltext-103 cl5">
+          <%= categories[j].name %>
+        </h3>
+      </div>
+  
+      <% if (product && product.length > 0) { %>
+        <section class="categories container-fluid justify-content-between">
+          <div class="row ml-5">
+            <% for (let i = 0; i < product.length; i++) { %>
+              <% const id = product[i].category.toString() %>
+              <% const newId = id.substring(0, 24) %>
+  
+              <% if (categories[j]._id == newId) { %>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                  <div class="categories__item set-bg" data-setbg="/admin/product/<%= product[i].images[0] %>">
+                    <div class="categories__text" style="margin-top: 10rem;">
+                      <h4 ><%= product[i].name %></h4>
+                      <p></p>
+                      <a class="text-dark" href="product-details?productid=<%= product[i]._id %>">Shop now</a>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            <% } %>
+          </div>
+        </section>
+      <% } %>
+    <% } %>
+  <% } %>
+  
+
+<!-- Categories Section End -->
+
+
+<!-- Banner Section Begin -->
+<!-- <section class="banner set-bg" data-setbg="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=600" style="height: 38rem;">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-7 col-lg-8 m-auto">
+                <div class="banner__slider owl-carousel">
+                    <div class="banner__item">
+                        <div class="banner__text">
+                            <span style="color: #0a0a0a;">Premium Collections</span>
+                            <h1 style="color: #fff;">Home kits</h1>
+                            <a  style="color: #fff;"href="/productload?subcategoryid=640853b1d4bb93d36321a56b">Shop now</a>
+                        </div>
+                    </div>
+                    <div class="banner__item">
+                        <div class="banner__text">
+                            <span style="color: #0a0a0a;">Premium Collections</span>
+                            <h1 style="color: #fff;">Boots</h1>
+                            <a style="color: #fff;" href="/productload?categoryid=64079ddd260a4b6b0f035615">Shop now</a>
+                        </div>
+                    </div>
+                    <div class="banner__item">
+                        <div class="banner__text">
+                            <span style="color: #0a0a0a;">Premium Collections</span>
+                            <h1 style="color: #fff;" >Football</h1>
+                            <a style="color: #fff;" href="/productload?subcategoryid=6408536cd4bb93d36321a561">Shop now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<%- include("../layouts/userfooter.ejs") %>

@@ -1,0 +1,89 @@
+<%- include("../layouts/userheader.ejs") %>
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="#">Cart </a>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+    <section class="bg0 p-t-40 p-b-116">
+        <div class="container">
+            <div class="flex-w flex-tr">
+                <div class="size-210 bor10 p-lr-70 p-t-20 p-b-70 p-lr-15-lg w-full-md">
+    <h2>Add Address</h2>
+    <form id="address-form" action="/addaddress" method="post" class="bg-light rounded-5 p-4">
+        <label>Firstname *</label>
+        <input type="text" id="firstname" class="form-control" name="firstname" placeholder="First name"
+        
+            required>
+
+        <label>Last Name *</label>
+        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name"
+       
+            required>
+
+
+
+        <label>Country *</label>
+        <input type="text" class="form-control" name="country" id="country" placeholder="Country"
+      
+            required>
+
+        <label>Address *</label>
+        <input type="text" class="form-control" name="address" id="address" placeholder="Address"
+       
+            required>
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Town / City *</label>
+                <input type="text" class="form-control" name="city" id="city" placeholder="City"
+              
+                    required>
+            </div><!-- End .col-sm-6 -->
+
+            <div class="col-sm-6">
+                <label>State / County *</label>
+                <input type="text" class="form-control" id="state" name="state" placeholder="State"
+              
+                    required>
+            </div><!-- End .col-sm-6 -->
+        </div><!-- End .row -->
+
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Postcode / ZIP *</label>
+                <input type="text" class="form-control" name="zip" id="zip"
+                    placeholder="Postcode/ZIP"   required>
+            </div><!-- End .col-sm-6 -->
+
+            <div class="col-sm-6">
+                <label>Phone *</label>
+                <input type="tel" class="form-control" name="phone" id="phone" placeholder="Phone"
+               
+                    required>
+            </div>
+            <div class="col-sm-6">
+                <label>Email *</label>
+                <input type="tel" class="form-control" name="email" id="email" placeholder="Email"
+               
+                    required>
+            </div>
+        </div>
+
+    <button class="btn-primary" type="submit">Save Address</button>
+    </form>
+</div>
+</div>
+</section>
+
+<%- include("../layouts/userfooter.ejs") %>

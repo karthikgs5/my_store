@@ -1,0 +1,236 @@
+<%- include("../layouts/userheader.ejs") %>
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="#">Cart </a>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+      <!-- Shop Cart Section Begin -->
+<% if(cartproducts.item.length==0){ %>
+    <section class="shop-cart spad"  style="text-align: center;">
+    <tr>
+        <td colspan="5">No products in cart</td>
+    </tr>
+
+
+    
+    <%}else{%>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shop__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                        
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tbody>
+                                    <% for(let i=0;i<cartproducts.item.length;i++){ %>
+                                    
+                                          <tr>
+                                          
+                                              <td class="cart__product__item">
+                                                <img style="height:5rem;width:5rem" src="/admin/product/<%= cartproducts.item[i].productId.images[0] %>" alt="">
+                                                <div class="cart__product__item__title">
+                                                  <h6><%=cartproducts.item[i].productId.name %></h6>
+                                                  <div class="rating">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                  </div>
+                                                </div>
+                                              </td>
+                                            
+                                            <td class="cart__price" id="price"><%= cartproducts.item[i].productId.price %></td>
+                                            <td class="cart__quantity  align-middle">
+         
+
+                                            <div class="input-group plus-minus-input" style="justify-content: center; margin-left: -3rem;">
+                                                <div class="input-group-button">
+                                                  <button type="button" class="button hollow circle btn-primary"  data-quantity="minus" data-field="<%=cartproducts.item[i].productId._id%>"  onclick="update('<%=cartproducts.item[i].productId._id%>',0,'<%=i%>')">
+                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                  </button>
+                                                </div>
+                                                <input class="input-group-field text-center" min="1" type="number" name="quantity" value="<%=cartproducts.item[i].quantity%>" id='<%=cartproducts.item[i].productId._id%>'  style="width: 20% " disabled="disabled">
+
+                                                <div class="input-group-button">
+                                                  <button type="button" class="button hollow circle btn-primary" data-quantity="plus" data-field="<%=cartproducts.item[i].productId._id%>"  onclick="update('<%=cartproducts.item[i].productId._id%>','<%-cartproducts.item[i].productId.stock%>','<%=i%>')">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                  </button>
+                                                </div>
+                                              </div> 
+                                              
+                                            </td>
+                                            <td  class="align-middle" id="<%=i%>"><%=cartproducts.item[i].productId.price*cartproducts.item[i].quantity%></td>
+
+                                            <td class="cart__close">
+                                              <a href="/removefromcart?productid=<%=cartproducts.item[i].productId._id%>"><span class="icon_close"></span></a>
+                                            </td>
+                                            </tr>
+                                            <% } %>
+                                           
+                                        
+                                          </tbody>
+                                      </table>
+                                  </div>
+                                 </div>
+                                </div>
+                            
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="cart__btn">
+                                            <a href="/productload">Continue Shopping</a>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                               
+                                
+            <div class="row ">
+                
+                <div class="container">
+                    <div class="row justify-content-end ">
+                      <div class="col-sm-4">
+                        <div class="cart__total__procced">
+                          <h6>Cart total</h6>
+                          <ul>
+                            <li id="total"><span>Rs <%=cartproducts.totalprice%>.00</span></li>
+                          </ul>
+                          <a href="/checkoutload" class="btn btn-primary">Proceed to checkout</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+            </div>
+        </div>
+        <% } %>
+    </section>
+    <!-- Shop Cart Section End -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
+    <script>
+          jQuery(document).ready(function () {
+                        // This button will increment the value
+                        $('[data-quantity="plus"]').click(function (e) {
+                            // Stop acting like a button
+                            e.preventDefault();
+                            // Get the field name
+                            fieldName = $(this).attr('data-field');
+                            // Get its current value
+                            Val = $('input[name=' + fieldName + ']').val()
+                            console.log(Val);
+                            var values = Val.split(',')
+                            var currentVal = parseInt(values[0])
+                            var stock = parseInt(values[1])
+                            console.log(currentVal, stock);
+                            // If is not undefined
+                            if (!isNaN(currentVal)) {
+                                // Increment
+                                if (currentVal == stock) {
+                                    console.log("hey") 
+                            swal({
+                                title: "Error!",
+                                text: "product is out of stock",
+                                icon: "error",
+                                button: "OK",
+                            });
+
+
+                                } else {
+                                    $('input[name=' + fieldName + ']').val(currentVal + 1);
+                                }
+                            } else {
+                                // Otherwise put a 0 there
+                                $('input[name=' + fieldName + ']').val(0);
+                            }
+                        });
+                        // This button will decrement the value till 0
+                        $('[data-quantity="minus"]').click(function (e) {
+                            // Stop acting like a button
+                            e.preventDefault();
+                            // Get the field name
+                            fieldName = $(this).attr('data-field');
+                            // Get its current value
+                            Val = $('input[name=' + fieldName + ']').val()
+                            console.log(Val);
+                            var values = Val.split(',')
+                            var currentVal = parseInt(values[0])
+                            // If it isn't undefined or its greater than 0
+                            if (!isNaN(currentVal) && currentVal > 1) {
+                                // Decrement one
+                                $('input[name=' + fieldName + ']').val(currentVal - 1);
+                            } else {
+                                // Otherwise put a 0 there
+                                $('input[name=' + fieldName + ']').val(1);
+                            }
+                        });
+                    });
+        function update( id,plus,amt ) {
+            
+            currentqty = document.getElementById(id)
+                        console.log(plus, amt);
+                        if (plus) {
+                            if (currentqty.value < parseInt(plus)) {
+                                currentqty.parentNode.querySelector('input[type=number]').stepUp();
+                            }
+                        } else {
+                            currentqty.parentNode.querySelector('input[type=number]').stepDown()
+                        }
+                        setTimeout(() => {
+                            console.log("currrent====" + currentqty.value);
+                            console.log('qty==' + currentqty.value);
+                            let quantity = document.getElementById(id).value;
+                            console.log(currentqty.value, plus);
+                            if (currentqty.value == plus && currentqty.value == 0) {
+                                console.log(currentqty.value, plus);
+                            } else {
+
+                                $.ajax({
+                                    url: '/updatecart',
+                                    type: 'POST',
+                                    data: { Quantity: quantity, _id: id },
+                                    success: function (data) {
+                                        console.log(data.test);
+                                        document.getElementById("total").innerHTML = "Rs " + data.test;
+                                        console.log(data.test);
+                                        console.log(quantity * data.price);
+                                        console.log(amt);
+                                        document.getElementById(amt).innerHTML = quantity * data.price;
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        console.log(textStatus, errorThrown);
+                                    }
+                                })
+                            }
+                        }, 50);
+                    }
+
+    
+    
+    
+        
+    </script>
+    <%- include("../layouts/userfooter.ejs") %>
+
+

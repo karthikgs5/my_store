@@ -1,0 +1,80 @@
+
+<%- include("../layouts/userheader.ejs") %>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+
+
+
+
+
+
+<div>
+    <section class="container ">
+    <div class="table-responsive">
+       <table class="table mb-5">
+         <thead class="bg-yellow-200">
+             <tr>
+
+                 <th>Order Id</th>
+                 <th>Date Purchased</th>
+                 <th>Item</th>
+                 <th>Payment</th>
+                 <th>Amount</th>
+                 <th>Action</th>
+                 <th>Orders</th>
+             </tr>
+         </thead>
+         <% i=0 %>
+         <% for(let key of orderDetail ) { %>
+            <tbody>
+                <td><%=key._id%></td>
+                <td><%=key.createdAt.toDateString()%></td>
+             
+                <td><img width="70px" height="70px" src="/admin/product/<%= product[i].images[0] %>" alt=""> <br>
+                  <%= product[i].name %>
+                </td>
+            
+
+                <td><%=key.payment.method%></td>
+                <td><%=key.payment.amount%></td>
+                <td>
+                  <% if(key.status=="Delivered"){%>
+                    <a href="/returnorders?id=<%=key._id%>" class="btn btn-danger">return item</a>
+                    
+                  <%} else if(key.status=="cancelled"){%>
+                    <h6>cancelled</h6>
+                    <%}else if(key.status=="returned"){%>
+                      <h6>returned</h6>
+                    <%}else{%> 
+                      <a href="/cancelorders?id=<%=key._id%>" class="btn btn-danger"> cancel </a>
+                      <%}%>
+                </td>
+                <td>
+                    <a href="/vieworders?id=<%=key._id%>" class="btn btn-primary">details</a>
+                 </td>
+            </tbody>
+            <% i++ %>
+            <% } %>
+        <tr>
+            <td>
+                <button type="button" class="btn  btn-outline-danger text-black my_orders"  onclick="window.location.href='/profileload'" >Back</button>
+
+            </td>
+        </tr>
+     </table>
+  </div>
+ </section>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+<%- include("../layouts/userfooter.ejs") %>
