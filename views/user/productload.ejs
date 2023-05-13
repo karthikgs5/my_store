@@ -1,4 +1,36 @@
 <%- include("../layouts/userheader.ejs") %>
+
+<style>
+  /* Hide the bottom scroll bar */
+body {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* Firefox */
+body::-webkit-scrollbar {
+  width: 0.5em;
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* Chrome, Edge, and Safari */
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+
+
+
+</style>
     
      <!-- Breadcrumb Begin -->
      <div class="breadcrumb-option">
@@ -127,7 +159,7 @@
                 <div class="product__item">
                     <% if(products.images.length > 0){ %>
                         <div class="product__item__pic set-bg" >
-                          <span><img src="/admin/product/<%= products.images[0] %>" alt=""></span>
+                          <span><img width="250rem" height="300rem" src="/admin/product/<%= products.images[0] %>" alt=""></span>
                         <div class="label new">New</div>
                         <ul class="product__hover">
                             <li><a href="/admin/product/<%= products.images %>" class="image-popup"><span class="arrow_expand"></span></a></li>

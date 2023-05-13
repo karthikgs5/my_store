@@ -99,6 +99,32 @@
             height: 100px;
             margin-bottom: 25px;
         }
+        /* Hide the bottom scroll bar */
+body {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* Firefox */
+body::-webkit-scrollbar {
+  width: 0.5em;
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* Chrome, Edge, and Safari */
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
     </style>
 </head>
 
@@ -122,9 +148,9 @@
             "key": "<%= key_id %>",
             "amount": "<%= total %>00",
             "currency": "INR",
-            "name": "New jersey",
+            "name": "My Store",
             "description": "Payment for your order",
-            "image": "/img/new-jersey-hand-drawn-lettering-text-us-state-name-isolated-white-background-modern-calligraphy-posters-cards-t-shirts-138304260-removebg-preview.png",
+            "image": "https://content.mystore.com/wp-content/uploads/2018/12/ms-logo-icon-no-padding.png",
             "order_id": "<%= order_id %>",
             "handler": function (response) {
                 // Handle successful payment

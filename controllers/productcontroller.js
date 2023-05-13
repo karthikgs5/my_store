@@ -169,7 +169,7 @@ const productload = async (req, res) => {
     try{
 
       const search = req.query.search || '';
-      const filter = { deleted: false };
+      const filter = { deleted: false  };
       const products = await product.find({
         $and: [
           filter,
@@ -181,9 +181,9 @@ const productload = async (req, res) => {
           }
         ]
       },
-      {images: 1, name: 1, description: 1, price: 1, category: 1, subcategory: 1, stock:1 }
+      {images: 1, name: 1, description: 1, price: 1, category: 1, subcategory: 1, stock:1,isAvailable:1 }
       ).populate("category subcategory")
-      // console.log(products);
+
       const categories= await category.find()
       const subcategories= await subcategory.find()
       res.render("showproducts",{products:products,categories:categories,subcategories:subcategories})
@@ -304,6 +304,42 @@ const deleteimage = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
+
+const updateProduct = async (req, res) => {
+  try {
+    const id = req.query.id;
+
+    const productToUpdate = await product.findById(id);
+    console.log(productToUpdate.isAvailable);
+
+    if (productToUpdate.isAvailable === 1) {
+      productToUpdate.isAvailable = 0;
+     
+      console.log("Product Unlisted",productToUpdate.isAvailable);
+    } else {
+      productToUpdate.isAvailable = 1;
+   
+      console.log("Product Listed", productToUpdate.isAvailable);
+    }
+
+    const updatedProduct = await productToUpdate.save();
+    res.redirect("/admin/showproducts");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+
+
+
+
+
+
+
+
 module.exports = {
 
     productload,
@@ -314,6 +350,7 @@ module.exports = {
     editproductload,
     editproduct,
     deleteproduct,
-    deleteimage
+    deleteimage,
+    updateProduct
 
 }

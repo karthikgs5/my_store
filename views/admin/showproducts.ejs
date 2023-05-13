@@ -6,7 +6,34 @@
     <%- include("../layouts/bars.ejs") %>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        /* Hide the bottom scroll bar */
+body {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
 
+/* Firefox */
+body::-webkit-scrollbar {
+  width: 0.5em;
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* Chrome, Edge, and Safari */
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+    </style>
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-nav">
@@ -70,54 +97,55 @@
                                     <img style="height:17rem;width:15.5rem" src="/admin/product/<%= product.images[0] %>" alt="pada">
                                 <% } %>
                                 
-
-
-                                
                                 <div class="info-wrap">
                                     <h5 class="title text-truncate"><%= product.name %></h5>
                                     <div class="price mb-2">INR <%= product.price %>.00</div> <!-- price.// -->
                                     <h5 class="title text-truncate"><%= product.subcategory.name %></h5>
                                     <h6 class="title text-truncate">In stock:<%= product.stock %></h6>
-
+                    
                                     <a href="/admin/editproduct?id=<%= product._id %>" class=" btn btn-sm-primary font-sm rounded btn-brand">
                                         <i class="material-icons md-edit"></i> Edit
                                     </a>
                                     <a href="#" data-id="<%= product._id %>" class=" btn btn-sm-primary font-sm rounded btn-brand delete-category-btn">
                                         <i class="material-icons md-delete_forever"></i> Delete
                                     </a>
-                                    <script>
-                                        // Add click event listener to all delete category buttons
-                                        document.querySelectorAll('.delete-category-btn').forEach(button => {
-                                          button.addEventListener('click', function(event) {
-                                            event.preventDefault();
-                                            const productID = this.getAttribute('data-id');
-                                        
-                                            // Show SweetAlert confirmation dialog
-                                            swal({
-                                              title: "Are you sure?",
-                                              text: "Once deleted, you will not be able to recover this product!",
-                                              icon: "warning",
-                                              buttons: true,
-                                              dangerMode: true,
-                                            })
-                                            .then((willDelete) => {
-                                              if (willDelete) {
-                                                // If user confirms deletion, redirect to deleteCategory route with categoryID parameter
-                                                window.location.href = `/admin/deleteproduct?id=${productID}`;
-                                              } else {
-                                                // If user cancels deletion, do nothing
-                                                return;
-                                              }
-                                            });
-                                          });
-                                        });
-                                        </script>
+                                    <% if(product.isAvailable === 0){ %>
+                                        <a href="/admin/updateproduct?id=<%= product._id %>">List</a>
+                                    <% } else { %>
+                                        <a href="/admin/updateproduct?id=<%= product._id %>">Unlist</a>
+                                    <% } %>
                                 </div>
-                                
                             </div> <!-- card-product  end// -->
                         </div> <!-- col.// --><% }) %>
-                        
-                    </div> <!-- row.// -->  
+                    </div>
+                    
+                    <script>
+                        // Add click event listener to all delete category buttons
+                        document.querySelectorAll('.delete-category-btn').forEach(button => {
+                            button.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                const productID = this.getAttribute('data-id');
+                    
+                                // Show SweetAlert confirmation dialog
+                                swal({
+                                    title: "Are you sure?",
+                                    text: "Once deleted, you will not be able to recover this product!",
+                                    icon: "warning",
+                                    buttons: true,
+                                    dangerMode: true,
+                                }).then((willDelete) => {
+                                    if (willDelete) {
+                                        // If user confirms deletion, redirect to deleteCategory route with categoryID parameter
+                                        window.location.href = `/admin/deleteproduct?id=${productID}`;
+                                    } else {
+                                        // If user cancels deletion, do nothing
+                                        return;
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                     <!-- row.// -->  
                     
                 </div> 
             </div> <!-- card end// -->

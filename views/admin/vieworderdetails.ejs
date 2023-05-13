@@ -2,7 +2,34 @@
 <%- include("../layouts/bars.ejs") %>
 <main class="main-wrap">
 <section class="content-main">
-    
+    <style>
+        /* Hide the bottom scroll bar */
+body {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* Firefox */
+body::-webkit-scrollbar {
+  width: 0.5em;
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* Chrome, Edge, and Safari */
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+    </style>
     <div class="content-header">
         <div>
             <h2 class="content-title card-title">Order detail</h2>

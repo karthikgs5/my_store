@@ -1,5 +1,33 @@
 <%- include("../layouts/adminheader.ejs") %>
     <%- include("../layouts/bars.ejs") %>
+    <style>
+        /* Hide the bottom scroll bar */
+body {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* Firefox */
+body::-webkit-scrollbar {
+  width: 0.5em;
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* Chrome, Edge, and Safari */
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+    </style>
     <main class="main-wrap">
         <header class="main-header navbar">
            

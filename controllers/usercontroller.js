@@ -34,7 +34,7 @@ const homepageload = async (req, res) => {
     if (req.session.userLogged) {
       const categories = await category.find({ deleted: false });
       const subcategories = await subcategory.find({ deleted: false });
-      const products = await product.find({ deleted : false})
+      const products = await product.find({ deleted : false, isAvailable : 1})
     
 
       res.render("home", {
@@ -49,7 +49,7 @@ const homepageload = async (req, res) => {
       req.session.loggedIn = null;
       const categories = await category.find({ deleted: false });
       const subcategories = await subcategory.find({ deleted: false });
-      const products = await product.find({ deleted : false})
+      const products = await product.find({ deleted : false , isAvailable : 1})
     
 
 
