@@ -8,7 +8,7 @@ mongoose.set("strictQuery",false)
 // })
 
 
-mongoose.connect("mongodb+srv://karthikgs:Karthik@005@cluster0.8adftd7.mongodb.net/mykart",()=> {
+mongoose.connect("mongodb+srv://karthikgs:Karthik005@cluster01.vcoog04.mongodb.net/myKart",()=> {
   console.log('Database Connected!!!');
 });
  
