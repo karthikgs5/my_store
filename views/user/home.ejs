@@ -61,8 +61,8 @@ body::-webkit-scrollbar-thumb {
 <% if (categories && categories.length > 0) { %>
     <% for (let j = 0; j < categories.length; j++) { %>
       <div class="p-b-10 ml-5">
-        <h3 class="ltext-103 cl5">
-          <%= categories[j].name %>
+      <h3 class="ltext-103 cl5 border-1">
+         <b> <%= categories[j].name %></b>
         </h3>
       </div>
   
@@ -77,9 +77,9 @@ body::-webkit-scrollbar-thumb {
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
                   <div class="categories__item set-bg" data-setbg="/admin/product/<%= product[i].images[0] %>">
                     <div class="categories__text" style="margin-top: 10rem;">
-                      <h4 ><%= product[i].name %></h4>
+                      <h4 ><b><%= product[i].name %></b></h4>
                       <p></p>
-                      <a class="text-dark" href="product-details?productid=<%= product[i]._id %>">Shop now</a>
+                      <a class="text-warning" href="product-details?productid=<%= product[i]._id %>"><b>Shop now</b></a>
                     </div>
                   </div>
                 </div>
