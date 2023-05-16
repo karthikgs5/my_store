@@ -77,6 +77,7 @@ const productload = async (req, res) => {
       
     } catch (error) {
       console.log(error.message);
+      res.redirect("/404error")
     }
   };
   const productdetails = async (req, res) => {
@@ -96,6 +97,7 @@ const productload = async (req, res) => {
       });
     } catch (error) {
       console.log(error.message);
+      res.redirect("/404error")
     }
   };
   const addproduct = async(req,res)=>{
@@ -114,6 +116,7 @@ const productload = async (req, res) => {
     }
     catch(error){
       console.log(error.message)
+      res.redirect("/404error")
 
     }
 
@@ -161,6 +164,7 @@ const productload = async (req, res) => {
         res.redirect('/admin/showproducts');
     } catch (err) {
         console.error(err);
+        res.redirect("/404error")
     }
 };
 
@@ -190,6 +194,7 @@ const productload = async (req, res) => {
       // console.log(products);
     }catch(error){
       console.log(error.message)
+      res.redirect("/404error")
     }
   }
 
@@ -214,6 +219,7 @@ const productload = async (req, res) => {
 
   catch(error){
     console.log(error.message)
+    res.redirect("/404error")
   }
 
 
@@ -248,6 +254,7 @@ const productload = async (req, res) => {
         
     } catch (error) {
         console.log(error.message);
+        res.redirect("/404error")
     }
 }
 
@@ -302,6 +309,7 @@ const deleteimage = async (req, res) => {
   
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error")
   }
 };
 

@@ -3,12 +3,9 @@ const mongoose = require("mongoose");
 const category = require("../models/categorymodel");
 const subcategory = require("../models/subcategorymodel");
 const product = require("../models/productmodel");
-const address = require("../models/addressmodel")
-const order = require("../models/ordermodel")
-const coupon = require("../models/couponmodel")
-
-
-
+const address = require("../models/addressmodel");
+const order = require("../models/ordermodel");
+const coupon = require("../models/couponmodel");
 
 require("dotenv").config();
 
@@ -20,13 +17,13 @@ const { sendMessage } = require("fast-two-sms");
 
 const OTP = require("otp-generator");
 
-
 const securePassword = async (password) => {
   try {
     const passwordHash = await bcrypt.hash(password, 10);
     return passwordHash;
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 const homepageload = async (req, res) => {
@@ -34,36 +31,32 @@ const homepageload = async (req, res) => {
     if (req.session.userLogged) {
       const categories = await category.find({ deleted: false });
       const subcategories = await subcategory.find({ deleted: false });
-      const products = await product.find({ deleted : false, isAvailable : 1})
-    
+      const products = await product.find({ deleted: false, isAvailable: 1 });
 
       res.render("home", {
         userData: req.session.username,
         loggedIn: req.session.userLogged,
         categories: categories,
         subcategories: subcategories,
-        product : products
-        
+        product: products,
       });
     } else {
       req.session.loggedIn = null;
       const categories = await category.find({ deleted: false });
       const subcategories = await subcategory.find({ deleted: false });
-      const products = await product.find({ deleted : false , isAvailable : 1})
-    
-
+      const products = await product.find({ deleted: false, isAvailable: 1 });
 
       res.render("home", {
         userData: "",
         loggedIn: req.session.loggedIn,
         categories: categories,
         subcategories: subcategories,
-        product : products
-        
+        product: products,
       });
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -72,10 +65,14 @@ const loginpageload = async (req, res) => {
     if (req.session.userLogged) {
       res.redirect("/");
     } else {
-      res.render("login", { access: "You must login to continue" ,loggedIn:""});
+      res.render("login", {
+        access: "You must login to continue",
+        loggedIn: "",
+      });
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -84,6 +81,7 @@ const registerload = async (req, res) => {
     res.render("register");
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -110,6 +108,7 @@ const insertuser = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -125,6 +124,7 @@ const loadotp = async (req, res) => {
     res.render("otp", { otp: otp, userData: userData });
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 const verifyotp = async (req, res) => {
@@ -155,6 +155,7 @@ const verifyotp = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -208,7 +209,11 @@ const verifylogin = async (req, res) => {
           });
         }
       } else {
-        res.render("login", { message: "password is incorrect", access: "",loggedIn:true });
+        res.render("login", {
+          message: "password is incorrect",
+          access: "",
+          loggedIn: true,
+        });
       }
     } else {
       res.render("login", {
@@ -218,7 +223,8 @@ const verifylogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "something went wrong" });
+    // return res.status(500).json({ message: "something went wrong" });
+    res.redirect("/404error");
   }
 };
 const forgotload = async (req, res) => {
@@ -236,6 +242,7 @@ const forgotpassword = async (req, res) => {
     res.render("otpforpass", { otp: otp, userData: userData });
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -256,6 +263,7 @@ const forgototp = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 const newpasswordadd = async (req, res) => {
@@ -271,6 +279,7 @@ const newpasswordadd = async (req, res) => {
     res.redirect("/login");
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -281,10 +290,9 @@ const logoutuser = async (req, res) => {
     res.redirect("/");
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
-
-
 
 const wishlistload = async (req, res) => {
   try {
@@ -307,6 +315,7 @@ const wishlistload = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -318,11 +327,11 @@ const addwishlist = async (req, res) => {
       const subcategoryid = req.query.subcategoryid;
       const userData = await User.findById(req.session.user_id);
       if (userData.wishlist.includes(productid)) {
-        res.json({ success: false, message: 'Product already in wishlist' });
+        res.json({ success: false, message: "Product already in wishlist" });
       } else {
         userData.wishlist.push(productid);
         await userData.save();
-        res.json({ success: true, message: 'Product added to wishlist' });
+        res.json({ success: true, message: "Product added to wishlist" });
       }
       res.redirect(
         `/productload?categoryid=${categoryid}&subcategoryid=${subcategoryid}&addedtowishlist=true`
@@ -332,6 +341,7 @@ const addwishlist = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 const removefromwishlist = async (req, res) => {
@@ -348,6 +358,7 @@ const removefromwishlist = async (req, res) => {
     res.redirect("/wishlistload");
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -371,6 +382,7 @@ const cartload = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
 
@@ -404,14 +416,14 @@ const addcart = async (req, res) => {
           // If the product is already in the cart, increase the quantity
           console.log("vanno");
           // Remove the product from the wishlist
-          
+
           await userData.save();
-          
+
           res.json({
             success: false,
             message: "Product already in cart",
           });
-        }else{
+        } else {
           const itemprice = productdata.price;
           userData.cart.item.push({
             productId,
@@ -419,68 +431,60 @@ const addcart = async (req, res) => {
             price: itemprice,
           });
 
-          productdata.stock -=1;
+          productdata.stock -= 1;
 
-  
           //calculate total price
           userData.cart.totalprice += itemprice;
           await userData.save();
           await productdata.save();
-  
+
           res.json({ success: true, message: "Product added in cart" });
-
         }
-        
-
-
-       
-      }
-      else{
-
-      if (cartItem) {
-        // If the product is already in the cart, increase the quantity
-        if (cartItem.quantity + 1 > productdata.stock) {
-          res.json({
-            success: false,
-            message: "Product stock exceeded",
-          });
-          return;
-        }
-        cartItem.quantity += 1;
-        cartItem.price += productdata.price;
-        userData.cart.totalprice += productdata.price;
-        await userData.save();
-
-        res.json({
-          success: true,
-          message: "Product quantity increased in cart",
-        });
       } else {
-        // If the product is not in the cart, add it
-        const itemprice = productdata.price;
-        userData.cart.item.push({
-          productId,
-          quantity: 1,
-          price: itemprice,
-        });
-        productdata.stock -=1;
+        if (cartItem) {
+          // If the product is already in the cart, increase the quantity
+          if (cartItem.quantity + 1 > productdata.stock) {
+            res.json({
+              success: false,
+              message: "Product stock exceeded",
+            });
+            return;
+          }
+          cartItem.quantity += 1;
+          cartItem.price += productdata.price;
+          userData.cart.totalprice += productdata.price;
+          await userData.save();
 
-        //calculate total price
-        userData.cart.totalprice += itemprice;
-        await userData.save();
-        await productdata.save();
+          res.json({
+            success: true,
+            message: "Product quantity increased in cart",
+          });
+        } else {
+          // If the product is not in the cart, add it
+          const itemprice = productdata.price;
+          userData.cart.item.push({
+            productId,
+            quantity: 1,
+            price: itemprice,
+          });
+          productdata.stock -= 1;
 
-        res.json({ success: true, message: "Product added in cart" });
+          //calculate total price
+          userData.cart.totalprice += itemprice;
+          await userData.save();
+          await productdata.save();
+
+          res.json({ success: true, message: "Product added in cart" });
+        }
       }
-    } 
-  }else {
+    } else {
       res.redirect("/login");
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
 };
-
 
 const updatecart = async (req, res) => {
   try {
@@ -501,6 +505,7 @@ const updatecart = async (req, res) => {
     res.json({ test, price });
   } catch (error) {
     console.log(error);
+    res.redirect("/404error");
   }
 };
 const removefromcart = async (req, res) => {
@@ -513,219 +518,155 @@ const removefromcart = async (req, res) => {
     res.redirect("/cartload");
   } catch (error) {
     console.log(error);
+    res.redirect("/404error");
   }
 };
-const checkoutload= async(req,res)=>{
-  try{
-    const userData = req.session.user_id
-    const useraddress = await address.find({userId:userData})
-    const userdetails = await User.findById({_id:userData})
-    const usercart = await userdetails.populate("cart.item.productId")
-    const coupondata = await coupon.find({isAvailable:1})
+const checkoutload = async (req, res) => {
+  try {
+    const userData = req.session.user_id;
+    const useraddress = await address.find({ userId: userData });
+    const userdetails = await User.findById({ _id: userData });
+    const usercart = await userdetails.populate("cart.item.productId");
+    const coupondata = await coupon.find({ isAvailable: 1 });
     console.log(coupondata);
     const categories = await category.find({ deleted: false });
     const subcategories = await subcategory.find({ deleted: false });
 
-    res.render("ch",{
-      loggedIn:req.session.userLogged,
-      user:req.session.username,
-      address:useraddress,
-      checkoutdetails:usercart.cart,
+    res.render("ch", {
+      loggedIn: req.session.userLogged,
+      user: req.session.username,
+      address: useraddress,
+      checkoutdetails: usercart.cart,
       coupon: coupondata,
       wallet: userdetails.wallet,
-      categories:categories,
-      subcategories:subcategories
-
-
-    })
-  }
-  catch (error) {
+      categories: categories,
+      subcategories: subcategories,
+    });
+  } catch (error) {
     console.log(error.message);
-}
-}
+    res.redirect("/404error");
+  }
+};
 const applycoupon = async (req, res) => {
   try {
-      const totalprice = req.body.totalValue;
-      console.log("total" + totalprice);
-      console.log(req.body.coupon);
-      userdata = await User.findById({ _id: req.session.user_id });
-      offerdata = await coupon.findOne({ name: req.body.coupon });
-      console.log(offerdata);
-      console.log('fghdj');
-      if (offerdata) {
-          console.log('p333');
-          console.log(offerdata.expirydate, Date.now());
-          const date1 = new Date(offerdata.expirydate);
-          const date2 = new Date(Date.now());
-          if (date1.getTime() > date2.getTime()) {
-              console.log('p4444');
-              if (offerdata.usedby.includes(req.session.user_id)) {
-                  messag = 'coupon already used'
-                  console.log(messag);
-              } else {
-                  console.log('eldf');
-                  console.log(userdata.cart.totalprice, offerdata.maximumvalue, offerdata.minimumvalue);
-                  if (userdata.cart.totalprice >= offerdata.minimumvalue) {
-                      console.log('COMMING');
-                      console.log('offerdata.name');
-                      await coupon.updateOne({ name: offerdata.name }, { $push: { usedBy: userdata._id } });
-                      console.log('kskdfthg');
-                      disc = (offerdata.discount * totalprice) / 100;
-                      if (disc > offerdata.maximumvalue) {
-                         disc = offerdata.maximumvalue
-                         }
-                      console.log(disc);
-                      res.send({ offerdata, disc, state: 1 })
-                  } else {
-                      messag = 'cannot apply'
-                      res.send({ messag, state: 0 })
-                  }
-              }
+    const totalprice = req.body.totalValue;
+    console.log("total" + totalprice);
+    console.log(req.body.coupon);
+    userdata = await User.findById({ _id: req.session.user_id });
+    offerdata = await coupon.findOne({ name: req.body.coupon });
+    console.log(offerdata);
+    console.log("fghdj");
+    if (offerdata) {
+      console.log("p333");
+      console.log(offerdata.expirydate, Date.now());
+      const date1 = new Date(offerdata.expirydate);
+      const date2 = new Date(Date.now());
+      if (date1.getTime() > date2.getTime()) {
+        console.log("p4444");
+        if (offerdata.usedby.includes(req.session.user_id)) {
+          messag = "coupon already used";
+          console.log(messag);
+        } else {
+          console.log("eldf");
+          console.log(
+            userdata.cart.totalprice,
+            offerdata.maximumvalue,
+            offerdata.minimumvalue
+          );
+          if (userdata.cart.totalprice >= offerdata.minimumvalue) {
+            console.log("COMMING");
+            console.log("offerdata.name");
+            await coupon.updateOne(
+              { name: offerdata.name },
+              { $push: { usedBy: userdata._id } }
+            );
+            console.log("kskdfthg");
+            disc = (offerdata.discount * totalprice) / 100;
+            if (disc > offerdata.maximumvalue) {
+              disc = offerdata.maximumvalue;
+            }
+            console.log(disc);
+            res.send({ offerdata, disc, state: 1 });
           } else {
-              messag = 'coupon Expired'
-              res.send({ messag, state: 0 })
+            messag = "cannot apply";
+            res.send({ messag, state: 0 });
           }
+        }
       } else {
-          messag = 'coupon not found'
-          res.send({ messag, state: 0 })
+        messag = "coupon Expired";
+        res.send({ messag, state: 0 });
       }
-      res.send({ messag, state: 0 })
-  }
-
-  catch (error) {
-      console.log(error.message);
-  }
-}
-
-const profileload =async (req,res)=>{
-  try {
-      const userid =req.session.user_id;
-      const user=await User.findOne({_id:userid});
-      const addid= await address.find({userId:userid})
-
-      const orderdata=await order.find({userId:userid}).sort({createdAt:1}).populate("products.item.productId");
-     
-      const categories = await category.find({ deleted: false });
-      const subcategories = await subcategory.find({ deleted: false });
-      res.render("userProfile",{ 
-        loggedIn: req.session.userLogged,
-        user:req.session.username,
-        useraddress:addid,
-        userData:user,
-        order:orderdata,
-        categories:categories,
-        subcategories:subcategories
-      })
+    } else {
+      messag = "coupon not found";
+      res.send({ messag, state: 0 });
+    }
+    res.send({ messag, state: 0 });
   } catch (error) {
-      console.log(error.message);
+    console.log(error.message);
+    res.redirect("/404error");
   }
-  }
- const updateProfile = async (req,res) => {
+};
+
+const profileload = async (req, res) => {
   try {
-    const name = req.body.name
-    const email = req.body.email
-    const bio = req.body.bio
-    const mobile = req.body.mobile
+    const userid = req.session.user_id;
+    const user = await User.findOne({ _id: userid });
+    const addid = await address.find({ userId: userid });
+
+    const orderdata = await order
+      .find({ userId: userid })
+      .sort({ createdAt: 1 })
+      .populate("products.item.productId");
+
+    const categories = await category.find({ deleted: false });
+    const subcategories = await subcategory.find({ deleted: false });
+    res.render("userProfile", {
+      loggedIn: req.session.userLogged,
+      user: req.session.username,
+      useraddress: addid,
+      userData: user,
+      order: orderdata,
+      categories: categories,
+      subcategories: subcategories,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const updateProfile = async (req, res) => {
+  try {
+    const name = req.body.name;
+    const email = req.body.email;
+    const bio = req.body.bio;
+    const mobile = req.body.mobile;
 
     const user = await User.findByIdAndUpdate(
       {
-        _id : req.session.user_id
+        _id: req.session.user_id,
       },
       {
-        $set :{
-          name : name,
-          email : email,
-          bio : bio,
-          phone : mobile          
-        }
+        $set: {
+          name: name,
+          email: email,
+          bio: bio,
+          phone: mobile,
+        },
       }
-    )
-    user.save()
+    );
+    user.save();
     console.log("user Updated");
-    res.redirect("/profileload")
-
-    
+    res.redirect("/profileload");
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
- }
+};
 
-
-
-
-
-
-  const addnewaddress=async(req,res)=>{
-    try {
-      const hidden = req.body.hidden;
-      console.log("hehe");
-      console.log(req.body.address)
-        const newAddress = new address({
-          firstname: req.body.firstname,
-          lastname: req.body.lastname,
-          country: req.body.country,
-          address: req.body.address,
-          city: req.body.city,
-          state: req.body.state,
-          zip: req.body.zip,
-          phone: req.body.phone,
-          email: req.body.email,
-          userId: req.session.user_id
-        })
-        const newaddress =await newAddress.save();
-        if(newaddress&&hidden){
-            res.redirect("/profileload");
-        }else{
-          res.redirect("/checkoutload")
-        }
-    } catch (error) {
-      console.log(error.message)
-        
-    }
-}
-const addfromcheckout =async(req,res)=>{
-try{
-  const categories = await category.find({ deleted: false });
-  const subcategories = await subcategory.find({ deleted: false });
-
-  res.render("addressfromcheck",{
-    user:req.session.username,
-    loggedIn:req.session.userLogged,
-    categories:categories,
-    subcategories:subcategories
-
-  })
-
-}catch(error){
-  console.log(error.message);
-}
-
-}
-
-
-
-const  addressNew = async(req,res) => {
+const addnewaddress = async (req, res) => {
   try {
-    const categories = await category.find({ deleted: false });
-  const subcategories = await subcategory.find({ deleted: false });
-
-
-  res.render("newaddress",{
-    user:req.session.username,
-    loggedIn:req.session.userLogged,
-    categories:categories,
-    subcategories:subcategories
-
-  })
-    
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
- const newAddressAdd = async (req,res, next) => {
-  try {
-
+    const hidden = req.body.hidden;
+    console.log("hehe");
+    console.log(req.body.address);
     const newAddress = new address({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -736,123 +677,186 @@ const  addressNew = async(req,res) => {
       zip: req.body.zip,
       phone: req.body.phone,
       email: req.body.email,
-      userId: req.session.user_id
-    })
-    newAddress.save()
-    
-    next()
+      userId: req.session.user_id,
+    });
+    const newaddress = await newAddress.save();
+    if (newaddress && hidden) {
+      res.redirect("/profileload");
+    } else {
+      res.redirect("/checkoutload");
+    }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
- }
-
-
-
-const editaddress = async(req,res)=>{
-  try{
-    const id=req.query.id;
-    const add= await address.findOne({_id:id})
+};
+const addfromcheckout = async (req, res) => {
+  try {
     const categories = await category.find({ deleted: false });
     const subcategories = await subcategory.find({ deleted: false });
-   res.render("editaddress",{
-    user:req.session.username,
-    loggedIn:req.session.userLogged,
-    address:add,
-    categories:categories,
-    subcategories:subcategories
-    
-  });
 
-  }
-  catch(error){
+    res.render("addressfromcheck", {
+      user: req.session.username,
+      loggedIn: req.session.userLogged,
+      categories: categories,
+      subcategories: subcategories,
+    });
+  } catch (error) {
     console.log(error.message);
+    res.redirect("/404error");
   }
+};
 
-}
-const updateaddress =async(req,res)=>{
+const addressNew = async (req, res) => {
   try {
-      const id=req.body.id;
-      console.log(id);
-      const upadteAddress =await address.findByIdAndUpdate({_id:id},{$set:{
-          firstname:req.body.firstname,
-          lastname:req.body.lastname,
-          country:req.body.country,
-          address:req.body.address,
-          city:req.body.city,
-          zip:req.body.zip,
-          phone:req.body.phone
-      }})
-      console.log(upadteAddress);
-     res.redirect("/profileload")
+    const categories = await category.find({ deleted: false });
+    const subcategories = await subcategory.find({ deleted: false });
+
+    res.render("newaddress", {
+      user: req.session.username,
+      loggedIn: req.session.userLogged,
+      categories: categories,
+      subcategories: subcategories,
+    });
   } catch (error) {
-      console.log(error.message);
+    console.log(error.message);
+    res.redirect("/404error");
   }
-}
+};
 
-const deleteaddress =async(req,res)=>{
+const newAddressAdd = async (req, res, next) => {
   try {
-      const id=req.query.id;
-      const Address=await address.deleteOne({_id:id});
-      if(Address){
-          res.redirect("/profileload");
+    const newAddress = new address({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      country: req.body.country,
+      address: req.body.address,
+      city: req.body.city,
+      state: req.body.state,
+      zip: req.body.zip,
+      phone: req.body.phone,
+      email: req.body.email,
+      userId: req.session.user_id,
+    });
+    newAddress.save();
+
+    next();
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/404error");
+  }
+};
+
+const editaddress = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const add = await address.findOne({ _id: id });
+    const categories = await category.find({ deleted: false });
+    const subcategories = await subcategory.find({ deleted: false });
+    res.render("editaddress", {
+      user: req.session.username,
+      loggedIn: req.session.userLogged,
+      address: add,
+      categories: categories,
+      subcategories: subcategories,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/404error");
+  }
+};
+const updateaddress = async (req, res) => {
+  try {
+    const id = req.body.id;
+    console.log(id);
+    const upadteAddress = await address.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          country: req.body.country,
+          address: req.body.address,
+          city: req.body.city,
+          zip: req.body.zip,
+          phone: req.body.phone,
+        },
       }
+    );
+    console.log(upadteAddress);
+    res.redirect("/profileload");
   } catch (error) {
-      console.log(error.message);
+    console.log(error.message);
+    res.redirect("/404error");
   }
+};
+
+const deleteaddress = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const Address = await address.deleteOne({ _id: id });
+    if (Address) {
+      res.redirect("/profileload");
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/404error");
   }
-  const editcheckoutadd =async(req,res)=>{
-    try {
-        const id=req.query.id;
-        const addressdata=await address.findById({_id:id});
-        const categories = await category.find({ deleted: false });
-        const subcategories = await subcategory.find({ deleted: false });
-        res.render("editcheckoutadd",{
-          user:req.session.username,
-          loggedIn:req.session.userLogged,
-          address:addressdata,
-          categories:categories,
-          subcategories:subcategories
+};
 
-        });
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-const updatecheckoutadd =async(req,res)=>{
-    try {
-        const id=req.body.id;
-        console.log(id);
-        const upadteAddres =await address.findByIdAndUpdate({_id:id},{$set:{
-            firstname:req.body.firstname,
-            lastname:req.body.lastname,
-            country:req.body.country,
-            address:req.body.address,
-            city:req.body.city,
-            zip:req.body.zip,
-            phone:req.body.phone
-        }})
-        console.log(upadteAddres);
-       res.redirect("/checkoutload")
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-const delcheckoutadd=async(req,res)=>{
-    try {
-        const id=req.query.id;
-        const deleteAddress= await address.findByIdAndDelete({_id:id})
-        res.redirect("/checkoutload")
-    } catch (error) {
-        
-    }
-}
-
-
-
-
-
+const editcheckoutadd = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const addressdata = await address.findById({ _id: id });
+    const categories = await category.find({ deleted: false });
+    const subcategories = await subcategory.find({ deleted: false });
+    res.render("editcheckoutadd", {
+      user: req.session.username,
+      loggedIn: req.session.userLogged,
+      address: addressdata,
+      categories: categories,
+      subcategories: subcategories,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/404error");
+  }
+};
+const updatecheckoutadd = async (req, res) => {
+  try {
+    const id = req.body.id;
+    console.log(id);
+    const upadteAddres = await address.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          country: req.body.country,
+          address: req.body.address,
+          city: req.body.city,
+          zip: req.body.zip,
+          phone: req.body.phone,
+        },
+      }
+    );
+    console.log(upadteAddres);
+    res.redirect("/checkoutload");
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/404error");
+  }
+};
+const delcheckoutadd = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const deleteAddress = await address.findByIdAndDelete({ _id: id });
+    res.redirect("/checkoutload");
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/404error");
+  }
+};
 
 module.exports = {
   securePassword,
@@ -889,7 +893,5 @@ module.exports = {
   addfromcheckout,
   addressNew,
   newAddressAdd,
-  updateProfile
- 
-  
+  updateProfile,
 };

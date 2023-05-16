@@ -24,6 +24,7 @@ const loadsubcategories = async (req, res) => {
       res.render("subcategory", { subcategories: subcategories,categories: categories });
     } catch (error) {
       console.log(error.message);
+      res.redirect("/404error")
     }
   };
   const createsubcategory = async (req, res) => {

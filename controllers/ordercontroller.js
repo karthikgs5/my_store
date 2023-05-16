@@ -189,6 +189,7 @@ const placeorder = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error")
   }
 };
 
@@ -208,6 +209,7 @@ const loadordersuccess = async (req, res) => {
     res.render("ordersuccess", { user: req.session.user, orders: newOrder });
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error")
   }
 };
 const vieworders = async (req, res) => {
@@ -230,7 +232,10 @@ const vieworders = async (req, res) => {
       categories: categories,
       subcategories: subcategories,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/404error")
+  }
 };
 
 const cancelorders = async (req, res) => {
@@ -269,6 +274,7 @@ const cancelorders = async (req, res) => {
     res.redirect("/listorders");
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error")
   }
 };
 const returnorders = async (req, res) => {
@@ -307,6 +313,7 @@ const returnorders = async (req, res) => {
     res.redirect("/profileload");
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error")
   }
 };
 const ordersload = async (req, res) => {
@@ -321,6 +328,7 @@ const ordersload = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error")
   }
 };
 const vieworderdetails = async (req, res) => {
@@ -331,6 +339,7 @@ const vieworderdetails = async (req, res) => {
     res.render("vieworderdetails", { orders: details });
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error")
   }
 };
 
@@ -405,6 +414,7 @@ const listorder = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.redirect("/404error")
   }
 };
 

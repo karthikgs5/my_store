@@ -95,7 +95,11 @@ body::-webkit-scrollbar-thumb {
                                 <input type="hidden" name="subcategoryid" value="<%=products.subcategory%>">
                                 <input type="hidden" name="productid" value="<%=products._id%>">
                                 <input type="hidden" name="productdetails" value="true">
+                                <% if(products.stock<=0) { %>
+                                    <h4 class="text-danger">Out Of Stock</h4>
+                                    <% }else { %>
                                 <button style="border:none" type="submit" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</button>
+                                <% } %>
                               </form>
                            
                         </div>
@@ -148,7 +152,7 @@ body::-webkit-scrollbar-thumb {
                                                 <h6 style="color: red;">Only <%=products.stock%> left</h6>
                                                
                                                 <%}}else{%>
-                                                    <h6 style="color:green"><%=products.stock%> pieces</h6>
+                                                    <h6 style="color:green">In stock</h6>
                                                    
                                                     <%}%>
                                    
