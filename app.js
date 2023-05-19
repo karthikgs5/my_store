@@ -8,9 +8,9 @@ mongoose.set("strictQuery",false)
 // })
 
 
-// mongoose.connect("mongodb+srv://karthikgs:<@cluster01.vcoog04.mongodb.net/?retryWrites=true&w=majority",()=> {
-//   console.log('Database Connected!!!');
-// });
+mongoose.connect("mongodb+srv://karthikgs:Karthik005@cluster01.vcoog04.mongodb.net/myKart",()=> {
+  console.log('Database Connected!!!');
+});
 // mongoose.connect("mongodb+srv://karthikgs:Karthik005@cluster01.vcoog04.mongodb.net/myKart",()=> {
 //   console.log('Database Connected!!!');
 // });
